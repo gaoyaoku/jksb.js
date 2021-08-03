@@ -1,25 +1,41 @@
 /*
 =====================简介=====================
+A JavaScript program for you to have a good sleep!
+        Last modified time: 2021-8-3
+
      Created by GAOYAOKU on 2021-07-30
          Copyright © 2021 GAOYAOKU
             All rights reserved
          Email: gaoyaoku@gmail.com
 =================个人信息填写=================
 */
-const username = '20192410****';   //用户名
-const password = '********';   //密码
-const provinceCode = '41';   //省代码
-const cityCode = '4101';   //省代码
-const currentLocation = '郑州大学主校区';   //当前实际所在地
-const isReturn = '否';   //是否为当日返郑人员
-const previousLocation = '';   //若是请填写返回前居住地和抵郑时间
-const longitude = '***.******';   //经度
-const latitude = '**.******';   //维度
+let username = '20192410****';   //用户名
+let password = '********';   //密码
+let provinceCode = '41';   //省代码
+let cityCode = '4101';   //省代码
+let currentLocation = '郑州大学主校区';   //当前实际所在地
+let isReturn = '否';   //是否为当日返郑人员
+let previousLocation = '';   //若是请填写返回前居住地和抵郑时间
+let longitude = '***.******';   //经度
+let latitude = '**.******';   //维度
+
+let isPersistence = 1;   //是否持久化存储
 /*
 ======================JS======================
 */
 
 const $ = new Env('健康上报');
+if (isPersistence) {
+    username = $.getdata('username');
+    password = $.getdata('password');
+    provinceCode = $.getdata('provinceCode');
+    cityCode = $.getdata('cityCode');
+    currentLocation = $.getdata('currentLocation');
+    isReturn = $.getdata('isReturn');
+    previousLocation = $.getdata('previousLocation');
+    longitude = $.getdata('longitude');
+    latitude = $.getdata('latitude');
+}
 const notify = $.isNode() ? require("./sendNotify") : "";
 let id;
 !(async () => {
