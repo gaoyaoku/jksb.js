@@ -1,0 +1,13 @@
+{
+  "name": "HealthReport",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "got": "^11.8.2",
+    "tough-cookie": "^4.0.0"
+  },
+  "keywords": [],
+  "author": "GAOYAOKU",
+  "license": ""
+}
