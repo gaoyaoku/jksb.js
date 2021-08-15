@@ -1,4 +1,4 @@
 ## jksb.js
-A <br> JavaScript program <br> for you <br> to have a good sleep!  
+A JavaScript program for you to have a good sleep!  
 
 ---
