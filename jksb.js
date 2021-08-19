@@ -39,7 +39,16 @@ if (isPersistence) {
 const notify = $.isNode() ? require("./sendNotify") : "";
 let id;
 !(async () => {
-    id = await getId();
+    for (let i=1; i<=3; i++) {
+        id = await getId();
+        if(id) {
+            break;
+        } else {
+            console.log(`第${i}次登录失败！`);
+            await $.wait(5000);
+        }
+    }
+    
     if (!id){
         console.log("登录失败！")
         $.msg($.name, '', '登录失败！' + getDate());
