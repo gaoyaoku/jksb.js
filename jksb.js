@@ -9,11 +9,11 @@ A JavaScript program for you to have a good sleep!
          Email: gaoyaoku@gmail.com
 =================个人信息填写=================
 */
-let username = '20192410****';   //用户名
+let username = '2019********';   //用户名
 let password = '********';   //密码
 let provinceCode = '41';   //省代码
 let cityCode = '4101';   //省代码
-let currentLocation = '郑州大学主校区';   //当前实际所在地
+let currentLocation = '郑州大学***';   //当前实际所在地
 let isReturn = '否';   //是否为当日返郑人员
 let previousLocation = '';   //若是请填写返回前居住地和抵郑时间
 let longitude = '***.******';   //经度
@@ -49,7 +49,8 @@ let id;
         }
         return ;
     }
-
+    
+    await $.wait(getRandomInt(3000));
     let status = await isDone();
 
     if (!status[1]) {
@@ -70,6 +71,7 @@ let id;
         }
         return ;
     } else {
+        await $.wait(getRandomInt(3000));
         await postOverview();
         let flag = await postMain();
         if (flag) {
@@ -327,6 +329,9 @@ function getDate() {
     return currentDate;
 }
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
 
 function Env(t, e) {
     "undefined" != typeof process && JSON.stringify(process.env).indexOf("GITHUB") > -1 && process.exit(0);
