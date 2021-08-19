@@ -1,7 +1,7 @@
 /*
 =====================简介=====================
 A JavaScript program for you to have a good sleep!
-        Last modified time: 2021-8-3
+        Last modified time: 2021-8-20
 
      Created by GAOYAOKU on 2021-07-30
          Copyright © 2021 GAOYAOKU
@@ -73,6 +73,7 @@ let id;
     } else {
         await $.wait(getRandomInt(3000));
         await postOverview();
+        await $.wait(getRandomInt(3000));
         let flag = await postMain();
         if (flag) {
             console.log("填报成功！");
