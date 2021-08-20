@@ -23,7 +23,6 @@ let isPersistence = 1;   //是否持久化存储
 /*
 ======================JS======================
 */
-
 const $ = new Env('健康上报');
 if (isPersistence) {
     username = $.getdata('username');
@@ -48,12 +47,10 @@ let id;
             await $.wait(5000);
         }
     }
-    
     if (!id){
         console.log("登录失败！")
         $.msg($.name, '', '登录失败！' + getDate());
         if ($.isNode()) {
-            //export的为{ },所以使用notify.sendNotify()
             await notify.sendNotify(`${$.name}`, `登录失败！`);
         }
         return ;
@@ -78,7 +75,6 @@ let id;
         if ($.isNode()) {
             await notify.sendNotify(`${$.name}`, `今天已完成填报！`);
         }
-        return ;
     } else {
         await $.wait(getRandomInt(3000));
         await postOverview();
@@ -90,17 +86,14 @@ let id;
             if ($.isNode()) {
                 await notify.sendNotify(`${$.name}`, `填报成功！`);
             }
-            return ;
         } else {
             console.log("填报失败！");
             $.msg($.name, '', '填报失败！' + getDate());
             if ($.isNode()) {
                 await notify.sendNotify(`${$.name}`, `填报失败！`);
             }
-            return;
         }
     }
-
 })()
     .catch((e) => $.logErr(e))
     .finally(() => $.done())
@@ -335,8 +328,7 @@ function getDate() {
     if (ss >= 0 && ss <= 9) {
         ss = "0" + ss;
     }
-    let currentDate = year + "-" + month + "-" + day + " " + hh + ":" + mm + ":" + ss;
-    return currentDate;
+    return year + "-" + month + "-" + day + " " + hh + ":" + mm + ":" + ss;
 }
 
 function getRandomInt(max) {
@@ -344,7 +336,6 @@ function getRandomInt(max) {
 }
 
 function Env(t, e) {
-    "undefined" != typeof process && JSON.stringify(process.env).indexOf("GITHUB") > -1 && process.exit(0);
 
     class s {
         constructor(t) {
