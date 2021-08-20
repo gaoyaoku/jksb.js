@@ -3,7 +3,7 @@
  */
 const querystring = require("querystring");
 const $ = new Env();
-const timeout = 15000;
+const timeout = 10000;
 /*
 =================微信server酱=================
 */
