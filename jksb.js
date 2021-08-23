@@ -1,7 +1,7 @@
 /*
 ====================简介=====================
 A JavaScript program for you to have a good sleep!
-        Last modified time: 2021-8-20
+        Last modified time: 2021-8-23
 
      Created by GAOYAOKU on 2021-07-30
          Copyright © 2021 GAOYAOKU
@@ -186,7 +186,7 @@ function isDone() {
 }
 
 function postOverview() {
-    console.log("post overview界面,进入主界面...");
+    console.log("Post Overview界面,进入主界面...");
     let urlOverview = {
         url: `https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb`,
         headers: {
@@ -221,7 +221,7 @@ function postOverview() {
 }
 
 function postMain() {
-    console.log("post Main界面,进入结果界面...");
+    console.log("Post Main界面,进入结果界面...");
     let urlMain = {
         url: `https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb`,
         headers: {
@@ -245,7 +245,7 @@ function postMain() {
                 if (err) {
                     console.log(`${JSON.stringify(err)}`)
                 } else {
-                    console.log("成功进入主界面！");
+                    console.log("成功进入结果界面！");
                     const re = /感谢/;
                     result = re.test(data);
                 }
@@ -272,11 +272,11 @@ function parseParams() {
         "myvs_10": "否",
         "myvs_11": "否",
         "myvs_12": "否",
+        "myvs_13":  "g",
         "myvs_13a": provinceCode,
         "myvs_13b": cityCode,
         "myvs_13c": currentLocation,
-        "myvs_14": isReturn,
-        "myvs_14b": previousLocation,
+        "myvs_24": isReturn,
         "memo22": "成功获取",
         "did": "2",
         "door": "",
@@ -297,9 +297,9 @@ function parseParams() {
             let value = encodeURIComponent(data[i]);
             tempArr.push(key + '=' + value);
         }
-        let urlParamsStr = tempArr.join('&');
-        return urlParamsStr;
+        return tempArr.join('&');
     } catch (err) {
+        console.log("bodyEncode发生错误！");
         return '';
     }
 }
@@ -785,9 +785,11 @@ function Env(name, opts) {
         }
         if (!this.isMuteLog) {
           let logs = ['', `📣${this.name}, 通知!`]
+          logs.push('---')
           logs.push(title)
           subt ? logs.push(subt) : ''
           desc ? logs.push(desc) : ''
+          logs.push('---')
           console.log(logs.join('\n'))
           this.logs = this.logs.concat(logs)
         }
@@ -817,7 +819,7 @@ function Env(name, opts) {
         const endTime = new Date().getTime()
         const costTime = (endTime - this.startTime) / 1000
         this.log('', `🔔${this.name}, 结束!`)
-        this.log('', `⏱${this.name},  ${costTime} 秒!`)
+        this.log('', `⏱${this.name}, ${costTime} 秒!`)
         if (this.isSurge() || this.isQuanX() || this.isLoon()) {
           $done(val)
         }
