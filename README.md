@@ -1,20 +1,14 @@
-## jksb.js
-### Introduction
-
----
+# jksb.js
+## Introduction
 **A JavaScript program for you to have a good sleep!**
 <br><br>
-### Features
-
----
+## Features
 - Automatically clock in for you everyday.
 - Automatically check whether the health QR code needs to be uploaded.
 - A variety of notification methods to let you know the result.
 - Available on almost all platforms.
 
-### History
-
----
+## History
 >2021-08-23 Synchronous update the options: health code color & location.  
 
 >2021-08-22 Custom notify & Update env.   
