@@ -691,7 +691,7 @@ function pushPlusNotify(text, desp) {
                         if (data.code === 200) {
                             console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息完成。\n`)
                         } else {
-                            console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息失败 ${data.msg}\n`)
+                            console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息失败，${data.msg}\n`)
                         }
                     }
                 } catch (e) {
