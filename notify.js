@@ -1,6 +1,3 @@
-/*
- Last Modified time: 2021-7-30
- */
 const querystring = require("querystring");
 const $ = new Env();
 const timeout = 10000;
@@ -33,7 +30,7 @@ let TG_PROXY_AUTH = '';
 //Telegram Api自建的反向代理地址,非必填.默认tg官方api(环境变量名 TG_API_HOST)
 let TG_API_HOST = 'api.telegram.org'
 /*
-==================钉钉机器人==================
+=================钉钉机器人==================
 */
 //钉钉Bot的webhook,例如：5a544165465465645d0f31dca676e7bd07415asdasd (环境变量名 DD_BOT_TOKEN)
 let DD_BOT_TOKEN = '';
@@ -70,7 +67,7 @@ let IGOT_PUSH_KEY = '';
 */
 //官方文档：http://www.pushplus.plus
 //微信扫码登录后一对一推送或一对多推送的Token(你的Token)
-let PUSH_PLUS_TOKEN = '50e944a2c73e47d78a8475500e2*****';
+let PUSH_PLUS_TOKEN = '';
 //不提供PUSH_PLUS_USER则默认为一对一推送.一对多推送的“群组编码”（一对多推送下面->您的群组->群组编码.如果你是群组创建人,也需点击“查看二维码”扫描绑定，否则不能接受群组消息推送）
 let PUSH_PLUS_USER = '';
 
@@ -145,15 +142,15 @@ if (process.env.PUSH_PLUS_USER) {
 =====================JS=======================
 */
 /**
- * sendNotify 推送通知功能
+ * notify 推送通知功能
  * @param text 通知头
  * @param desp 通知体
- * @param params 某些推送通知方式点击弹窗可跳转, 例：{ url: 'https://abc.com' }
+ * @param params 一些推送通知方式点击弹窗可跳转, 例：{ url: 'https://abc.com' }
  * @param author 作者仓库等信息
  * @returns {Promise<unknown>}
  */
 
-async function sendNotify(text, desp, params = {}, author = '') {
+async function notify(text, desp, params = {}, author = '') {
     //通知可增加作者信息
     desp += author;
     await Promise.all([
@@ -164,7 +161,7 @@ async function sendNotify(text, desp, params = {}, author = '') {
     text = text.match(/.*?(?=\s?-)/g) ? text.match(/.*?(?=\s?-)/g)[0] : text;
 
     await Promise.all([
-        BarkNotify(text, desp, params),//iOS Bark App
+        BarkNotify(text, desp, params),//iOS Bark
         tgBotNotify(text, desp),//Telegram Bot
         ddBotNotify(text, desp),//钉钉机器人
         qywxBotNotify(text, desp), //企业微信机器人
@@ -265,7 +262,7 @@ function CoolPush(text, desp) {
             $.post(options, (err, resp, data) => {
                 try {
                     if (err) {
-                        console.log(`QQ酷推发送${pushMode(QQ_MODE)}通知调用API失败！！\n`)
+                        console.log(`QQ酷推发送${pushMode(QQ_MODE)}通知调用API失败！\n`)
                         console.log(err);
                     } else {
                         data = JSON.parse(data);
@@ -472,7 +469,7 @@ function qywxBotNotify(text, desp) {
                     } else {
                         data = JSON.parse(data);
                         if (data.errcode === 0) {
-                            console.log('企业微信发送通知消息成功🎉。\n');
+                            console.log('企业微信发送通知消息成功🎉\n');
                         } else {
                             console.log(`${data.errmsg}\n`);
                         }
@@ -600,7 +597,7 @@ function qywxamNotify(text, desp) {
                         } else {
                             data = JSON.parse(data);
                             if (data.errcode === 0) {
-                                console.log('成员ID:' + ChangeUserId(desp) + '企业微信应用消息发送通知消息成功🎉。\n');
+                                console.log('成员ID:' + ChangeUserId(desp) + '企业微信应用消息发送通知消息成功🎉\n');
                             } else {
                                 console.log(`${data.errmsg}\n`);
                             }
@@ -691,7 +688,7 @@ function pushPlusNotify(text, desp) {
                         if (data.code === 200) {
                             console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息完成。\n`)
                         } else {
-                            console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息失败，${data.msg}\n`)
+                            console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息失败，${data.msg}!\n`)
                         }
                     }
                 } catch (e) {
@@ -708,10 +705,10 @@ function pushPlusNotify(text, desp) {
 }
 
 module.exports = {
-    sendNotify
+    notify
 }
 
-// prettier-ignore
+
 function Env(t, s) {
     return new class {
         constructor(t, s) {
