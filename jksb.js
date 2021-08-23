@@ -35,7 +35,7 @@ if (isPersistence) {
     longitude = $.getdata('longitude');
     latitude = $.getdata('latitude');
 }
-const notify = $.isNode() ? require("./sendNotify") : "";
+const notify = $.isNode() ? require("./notify").notify : "";
 let id;
 !(async () => {
     for (let i=1; i<=3; i++) {
@@ -51,7 +51,7 @@ let id;
         console.log("登录失败！")
         $.msg($.name, '', '登录失败！' + getDate());
         if ($.isNode()) {
-            await notify.sendNotify(`${$.name}`, `登录失败！`);
+            await notify(`${$.name}`, `登录失败！`);
         }
         return ;
     }
@@ -63,7 +63,7 @@ let id;
         console.log("今天需要上传健康码！" + getDate());
         $.msg($.name, '', '今天需要上传健康码！' + getDate());
         if ($.isNode()) {
-            await notify.sendNotify(`${$.name}`, `今天需要上传健康码！`);
+            await notify(`${$.name}`, `今天需要上传健康码！`);
         }
     } else {
         console.log("今天不需要上传健康码！" + getDate());
@@ -73,7 +73,7 @@ let id;
         console.log("今天已完成填报！" + getDate());
         $.msg($.name, '', '今天已完成填报！' + getDate());
         if ($.isNode()) {
-            await notify.sendNotify(`${$.name}`, `今天已完成填报！`);
+            await notify(`${$.name}`, `今天已完成填报！`);
         }
     } else {
         await $.wait(getRandomInt(3000));
@@ -84,13 +84,13 @@ let id;
             console.log("填报成功！");
             $.msg($.name, '', '填报成功！' + getDate());
             if ($.isNode()) {
-                await notify.sendNotify(`${$.name}`, `填报成功！`);
+                await notify(`${$.name}`, `填报成功！`);
             }
         } else {
             console.log("填报失败！");
             $.msg($.name, '', '填报失败！' + getDate());
             if ($.isNode()) {
-                await notify.sendNotify(`${$.name}`, `填报失败！`);
+                await notify(`${$.name}`, `填报失败！`);
             }
         }
     }
@@ -336,7 +336,6 @@ function getRandomInt(max) {
 }
 
 function Env(name, opts) {
-
     class Http {
       constructor(env) {
         this.env = env
