@@ -78,6 +78,7 @@ const notify = $.isNode() ? require("./notify").notify : "";
                 if(i === 3) {
                     console.log("填报失败！");
                     await message("填报失败！");
+                    return ;
                 }
                 await $.wait(10000)
             }
