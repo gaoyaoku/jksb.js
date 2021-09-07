@@ -1,7 +1,7 @@
 /*
 ====================简介=====================
 A JavaScript program for you to have a good sleep!
-        Last modified time: 2021-8-23
+        Last modified time: 2021-9-7
 
      Created by GAOYAOKU on 2021-07-30
          Copyright © 2021 GAOYAOKU
@@ -14,83 +14,72 @@ let password = '********';   //密码
 let provinceCode = '41';   //省代码
 let cityCode = '4101';   //省代码
 let currentLocation = '郑州大学***';   //当前实际所在地
-let isReturn = '否';   //是否为当日返郑人员
-let previousLocation = '';   //若是请填写返回前居住地和抵郑时间
 let longitude = '***.******';   //经度
 let latitude = '**.******';   //维度
 
-let isPersistence = 1;   //是否持久化存储
+let isPersistence = 0;   //是否持久化存储
 /*
 ======================JS======================
 */
 const $ = new Env('健康上报');
-if (isPersistence) {
+if ($.getdata('isPersistence') || isPersistence) {
     username = $.getdata('username');
     password = $.getdata('password');
     provinceCode = $.getdata('provinceCode');
     cityCode = $.getdata('cityCode');
     currentLocation = $.getdata('currentLocation');
-    isReturn = $.getdata('isReturn');
-    previousLocation = $.getdata('previousLocation');
     longitude = $.getdata('longitude');
     latitude = $.getdata('latitude');
 }
 const notify = $.isNode() ? require("./notify").notify : "";
-let id;
+
 !(async () => {
     for (let i=1; i<=3; i++) {
-        id = await getId();
-        if(id) {
+        $.id = await getId();
+        if($.id) {
             break;
         } else {
             console.log(`第${i}次登录失败！`);
-            await $.wait(5000);
+            if(i === 3) {
+                console.log("登录失败！");
+                await message('登录失败！');
+                return ;
+            }
+            await $.wait(10000);
         }
-    }
-    if (!id){
-        console.log("登录失败！")
-        $.msg($.name, '', '登录失败！' + getDate());
-        if ($.isNode()) {
-            await notify(`${$.name}`, `登录失败！`);
-        }
-        return ;
     }
     
-    await $.wait(getRandomInt(3000));
+    await $.wait(getRandomInt(5000));
     let status = await isDone();
 
     if (!status[1]) {
-        console.log("今天需要上传健康码！" + getDate());
-        $.msg($.name, '', '今天需要上传健康码！' + getDate());
-        if ($.isNode()) {
-            await notify(`${$.name}`, `今天需要上传健康码！`);
-        }
+        console.log("今天需要上传健康码！");
+        await message("今天需要上传健康码！");
     } else {
-        console.log("今天不需要上传健康码！" + getDate());
+        console.log("今天不需要上传健康码！");
     }
 
     if (status[0]) {
-        console.log("今天已完成填报！" + getDate());
-        $.msg($.name, '', '今天已完成填报！' + getDate());
-        if ($.isNode()) {
-            await notify(`${$.name}`, `今天已完成填报！`);
-        }
+        console.log("今天已完成填报！");
+        await message("今天已完成填报！");
     } else {
-        await $.wait(getRandomInt(3000));
+        await $.wait(getRandomInt(5000));
         await postOverview();
-        await $.wait(getRandomInt(3000));
-        let flag = await postMain();
-        if (flag) {
-            console.log("填报成功！");
-            $.msg($.name, '', '填报成功！' + getDate());
-            if ($.isNode()) {
-                await notify(`${$.name}`, `填报成功！`);
-            }
-        } else {
-            console.log("填报失败！");
-            $.msg($.name, '', '填报失败！' + getDate());
-            if ($.isNode()) {
-                await notify(`${$.name}`, `填报失败！`);
+        await $.wait(getRandomInt(5000));
+
+        for(let i = 1; i <= 3; i++) {
+            $.flag = await postMain();
+            if($.flag) {
+                console.log("填报成功！");
+                await message("填报成功！");
+                return ;
+            } else {
+                console.log(`第${i}次填报失败！`);
+                if(i === 3) {
+                    console.log("填报失败！");
+                    await message("填报失败！");
+                }
+                await $.wait(10000)
             }
         }
     }
@@ -151,12 +140,12 @@ function getId() {
 function isDone() {
     console.log("判断是否完成填报和是否需要上传健康码...")
     let urlOverviewLogin = {
-        url: `https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb?ptopid=${id[1]}&sid=${id[2]}&fun2=`,
+        url: `https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb?ptopid=${$.id[1]}&sid=${$.id[2]}&fun2=`,
         headers: {
             'Cookie': ``,
             'Accept': `text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8`,
             'Connection': `keep-alive`,
-            'Referer': `https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/first6?ptopid=${id[1]}&sid=${id[2]}`,
+            'Referer': `https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/first6?ptopid=${$.id[1]}&sid=${$.id[2]}`,
             'Accept-Encoding': `gzip, deflate, br`,
             'Host': `jksb.v.zzu.edu.cn`,
             'User-Agent': `Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1`,
@@ -198,10 +187,10 @@ function postOverview() {
             'Host': `jksb.v.zzu.edu.cn`,
             'Connection': `keep-alive`,
             'User-Agent': `Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1`,
-            'Referer': `https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb?ptopid=${id[1]}&sid=${id[2]}&fun2=`,
+            'Referer': `https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb?ptopid=${$.id[1]}&sid=${$.id[2]}&fun2=`,
             'Accept-Language': `zh-CN,zh-Hans;q=0.9`
         },
-        body: `day6=b&did=1&door=&men6=a&ptopid=${id[1]}&sid=${id[2]}`
+        body: `day6=b&did=1&door=&men6=a&ptopid=${$.id[1]}&sid=${$.id[2]}`
     }
     return new Promise(resolve => {
         $.post(urlOverview, (err, resp, data) => {
@@ -276,7 +265,7 @@ function parseParams() {
         "myvs_13a": provinceCode,
         "myvs_13b": cityCode,
         "myvs_13c": currentLocation,
-        "myvs_24": isReturn,
+        "myvs_24": '否',
         "memo22": "成功获取",
         "did": "2",
         "door": "",
@@ -287,17 +276,17 @@ function parseParams() {
         "fun3": "",
         "jingdu": longitude,
         "weidu": latitude,
-        "ptopid": id[1],
-        "sid": id[2]
+        "ptopid": $.id[1],
+        "sid": $.id[2]
     };
     try {
-        let tempArr = [];
+        let array = [];
         for (let i in data) {
             let key = encodeURIComponent(i);
             let value = encodeURIComponent(data[i]);
-            tempArr.push(key + '=' + value);
+            array.push(key + '=' + value);
         }
-        return tempArr.join('&');
+        return array.join('&');
     } catch (err) {
         console.log("bodyEncode发生错误！");
         return '';
@@ -333,6 +322,13 @@ function getDate() {
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
+}
+
+async function message(description) {
+    $.msg($.name, '', description + getDate());
+    if ($.isNode()) {
+        await notify(`${$.name}`, description);
+    }
 }
 
 function Env(name, opts) {
