@@ -1,7 +1,7 @@
 /*
 ====================简介=====================
 A JavaScript program for you to have a good sleep!
-        Last modified time: 2021-9-7
+        Last modified time: 2021-9-18
 
      Created by GAOYAOKU on 2021-07-30
          Copyright © 2021 GAOYAOKU
@@ -12,17 +12,18 @@ A JavaScript program for you to have a good sleep!
 let username = '2019********';   //用户名
 let password = '********';   //密码
 let provinceCode = '41';   //省代码
-let cityCode = '4101';   //省代码
+let cityCode = '4101';   //市代码
 let currentLocation = '郑州大学***';   //当前实际所在地
 let longitude = '***.******';   //经度
 let latitude = '**.******';   //维度
+let vaccinationState = 2;   //疫苗接种情况。1：已接种第一针；2：已接种第二针；3：尚未接种；4：因禁忌症无法接种。
 
-let isPersistence = 0;   //是否持久化存储
+let isPersistence = 0;   //是否持久化存储，默认为否。
 /*
 ======================JS======================
 */
 const $ = new Env('健康上报');
-if ($.getdata('isPersistence') || isPersistence) {
+if (parseInt($.getdata('isPersistence')) || isPersistence) {
     username = $.getdata('username');
     password = $.getdata('password');
     provinceCode = $.getdata('provinceCode');
@@ -30,6 +31,7 @@ if ($.getdata('isPersistence') || isPersistence) {
     currentLocation = $.getdata('currentLocation');
     longitude = $.getdata('longitude');
     latitude = $.getdata('latitude');
+    vaccinationState = $.getdata('vaccinationState');
 }
 const notify = $.isNode() ? require("./notify").notify : "";
 
@@ -52,12 +54,12 @@ const notify = $.isNode() ? require("./notify").notify : "";
     await $.wait(getRandomInt(5000));
     let status = await isDone();
 
-    if (!status[1]) {
-        console.log("今天需要上传健康码！");
-        await message("今天需要上传健康码！");
-    } else {
-        console.log("今天不需要上传健康码！");
-    }
+    // if (!status[1]) {
+    //     console.log("今天需要上传健康码！");
+    //     await message("今天需要上传健康码！");
+    // } else {
+    //     console.log("今天不需要上传健康码！");
+    // }
 
     if (status[0]) {
         console.log("今天已完成填报！");
@@ -111,7 +113,7 @@ function getId() {
             let result;
             try {
                 if (err) {
-                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${err}`)
                 } else {
                     //console.log(data);
                     const re = /ptopid=(.*?)&sid=(.*?)"/g;
@@ -139,7 +141,8 @@ function getId() {
 }
 
 function isDone() {
-    console.log("判断是否完成填报和是否需要上传健康码...")
+    console.log("判断是否完成填报...")
+    // console.log("是否需要上传健康码...")
     let urlOverviewLogin = {
         url: `https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb?ptopid=${$.id[1]}&sid=${$.id[2]}&fun2=`,
         headers: {
@@ -158,13 +161,13 @@ function isDone() {
             let result = [];
             try {
                 if (err) {
-                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${err}`)
                 } else {
                     //console.log(resp.body);
                     const reIsDone = /已经填报过了/;
-                    const reIsUpload = /已经上传过了/;
+                    // const reIsUpload = /已经上传过了/;
                     result[0] = reIsDone.test(data);
-                    result[1] = reIsUpload.test(data);
+                    // result[1] = reIsUpload.test(data);
                 }
             } catch (e) {
                 $.logErr(e, resp)
@@ -197,7 +200,7 @@ function postOverview() {
         $.post(urlOverview, (err, resp, data) => {
             try {
                 if (err) {
-                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${err}`)
                 } else {
                     console.log("成功进入主界面！");
                 }
@@ -233,7 +236,7 @@ function postMain() {
             let result;
             try {
                 if (err) {
-                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${err}`)
                 } else {
                     console.log("成功进入结果界面！");
                     const re = /感谢/;
@@ -267,6 +270,7 @@ function parseParams() {
         "myvs_13b": cityCode,
         "myvs_13c": currentLocation,
         "myvs_24": '否',
+        "myvs_26": vaccinationState,
         "memo22": "成功获取",
         "did": "2",
         "door": "",
