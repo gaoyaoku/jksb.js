@@ -1,12 +1,12 @@
 /*
 ====================简介=====================
 A JavaScript program for you to have a good sleep!
-        Last modified time: 2021-9-18
+        Last modified time: 2022-1-20
+ This version may be deprecated since 2022-1-20 
 
      Created by GAOYAOKU on 2021-07-30
          Copyright © 2021 GAOYAOKU
             All rights reserved
-         Email: gaoyaoku@gmail.com
 =================个人信息填写=================
 */
 let username = '2019********';   //用户名
@@ -16,14 +16,14 @@ let cityCode = '4101';   //市代码
 let currentLocation = '郑州大学***';   //当前实际所在地
 let longitude = '***.******';   //经度
 let latitude = '**.******';   //维度
-let vaccinationState = 2;   //疫苗接种情况。1：已接种第一针；2：已接种第二针；3：尚未接种；4：因禁忌症无法接种。
+let vaccinationState = 2;   //疫苗接种情况。1：已接种第一针；2：已接种第二针；3：尚未接种；4：因禁忌症无法接种；5：已接种第三针；
 
-let isPersistence = 0;   //是否持久化存储，默认为否。
+let isPersistence = false;   //是否持久化存储，默认为否。
 /*
 ======================JS======================
 */
 const $ = new Env('健康上报');
-if (parseInt($.getdata('isPersistence')) || isPersistence) {
+if ($.getdata('isPersistence')) {
     username = $.getdata('username');
     password = $.getdata('password');
     provinceCode = $.getdata('provinceCode');

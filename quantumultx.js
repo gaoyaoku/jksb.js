@@ -2,7 +2,7 @@
 ====================简介=====================
 A JavaScript program for you to have a good sleep!
 
-This version is specifically for Quantumult X.
+  This version is specifically for Quantumult X.
 
 =================个人信息填写=================
 */
@@ -63,19 +63,12 @@ function login() {
             url: "https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/login",
             method: "POST",
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: params
+            body: params.toString()
         };
 
         $task.fetch(myRequest).then(response => {
-            // response.statusCode, response.headers, response.body
-            // console.log(response.body);
-            // $notify("Title", "Subtitle", response.body); // Success!
-            // $done();
             resolve(response.body)
         }, reason => {
-            // reason.error
-            // $notify("Title", "Subtitle", reason.error); // Error!
-            // $done();
             reject(reason.error)
         });
     })
@@ -97,7 +90,8 @@ function getIndex(ptopid) {
 }
 
 function submitForm(ptopid) {
-    const params = new URLSearchParams()
+    return new Promise((resolve, reject) => {
+        const params = new URLSearchParams()
         params.append("myvs_1", "否")
         params.append("myvs_2", "否")
         params.append("myvs_3", "否")
@@ -133,7 +127,7 @@ function submitForm(ptopid) {
             url: "https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb",
             method: "POST",
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: params
+            body: params.toString()
         };
 
         $task.fetch(myRequest).then(response => {
@@ -141,4 +135,6 @@ function submitForm(ptopid) {
         }, reason => {
             reject(reason.error)
         });
+    })
+    
 }

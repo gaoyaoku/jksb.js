@@ -2,11 +2,10 @@
 ====================简介=====================
 A JavaScript program for you to have a good sleep!
 
-This version is specifically for Nodejs.
+    This version is specifically for Nodejs.
 
 =================个人信息填写=================
 */
-
 const username = '2019********';   //用户名
 const password = '********';   //密码
 const provinceCode = '41';   //省代码
@@ -15,6 +14,7 @@ const currentLocation = '郑州大学***';   //当前所在地
 const longitude = '***.******';   //经度
 const latitude = '**.******';   //维度
 const vaccinationState = 5;   //疫苗接种情况。1：已接种第一针；2：已接种第二针；3：尚未接种；4：因禁忌症无法接种；5：已接种第三针；
+
 
 const axios = require('axios')
 const querystring = require('querystring')
@@ -39,14 +39,13 @@ axios.defaults.headers.common['User-Agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone O
     console.log('登录成功！');
     console.log('查看今天填报情况...');
     const getIndexResult = await getIndex(ptopid)
-    if (/已经填报过了/.test(getIndexResult)) {
+    if (/已经填报过了ba/.test(getIndexResult)) {
         console.log('今天已经填报过了');
         return
     }
     console.log('今天还未填报！');
     console.log('填报中...');
     const submitFormResult = await submitForm(ptopid)
-    // console.log(submitFormResult);
     if(/感谢/.test(submitFormResult)) {
         console.log('填报成功！');
         
@@ -54,7 +53,6 @@ axios.defaults.headers.common['User-Agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone O
         console.log('填报失败！');
         
     }
-
 })()
 
 

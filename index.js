@@ -3,7 +3,7 @@ require('tls').DEFAULT_MIN_VERSION = 'TLSv1';
 
 exports.main_handler = async (event, context, callback) => {
     try {
-        require("./jksb.js");
+        // require("./jksb.js");
     } catch (e) {
         console.error(e)
     }
