@@ -45,6 +45,7 @@ axios.defaults.headers.common['User-Agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone O
     }
     console.log('今天还未填报！');
     console.log('填报中...');
+    await submitIndex(ptopid)
     const submitFormResult = await submitForm(ptopid)
     if(/感谢/.test(submitFormResult)) {
         console.log('填报成功！');
@@ -81,6 +82,21 @@ function getIndex(ptopid) {
             .catch(err => {
                 reject(err)
             })
+    })
+}
+
+function submitIndex(ptopid) {
+    return new Promise((resolve, reject) => {
+        const data = {
+            'did': '1',
+            'door': '',
+            'men6': 'a',
+            "ptopid": ptopid,
+            "sid": "",
+        }
+        axios.post('/jksb', querystring.stringify(data))
+        .then(res => reslove(res.data))
+        .catch(err => reject(err))
     })
 }
 

@@ -39,6 +39,8 @@ const vaccinationState = 5;   //疫苗接种情况。1：已接种第一针；2�
     }
     console.log('今天还未填报！');
     console.log('填报中...');
+    // 可能是虽然显示填报成功了，但没有打卡记录的原因
+    await submitIndex(ptopid)
     const submitFormResult = await submitForm(ptopid)
     if (/感谢/.test(submitFormResult)) {
         console.log('填报成功！');
@@ -79,6 +81,30 @@ function getIndex(ptopid) {
         const myRequest = {
             url: `https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb?ptopid=${ptopid}`,
             method: "GET",
+        };
+
+        $task.fetch(myRequest).then(response => {
+            resolve(response.body)
+        }, reason => {
+            reject(reason.error)
+        });
+    })
+}
+
+function submitIndex(ptopid) {
+    return new Promise((resolve, reject) => {
+        const params = new URLSearchParams();
+        params.append('did', 1);
+        params.append('door', '');
+        params.append('men6', 'a');
+        params.append("ptopid", ptopid)
+        params.append("sid", "")
+
+        const myRequest = {
+            url: "https://jksb.v.zzu.edu.cn/vls6sss/zzujksb.dll/jksb",
+            method: "POST",
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
         };
 
         $task.fetch(myRequest).then(response => {
