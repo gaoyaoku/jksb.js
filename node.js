@@ -54,7 +54,9 @@ axios.defaults.headers.common['User-Agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone O
         console.log('填报失败！');
         
     }
-})()
+})().catch(err => {
+    console.log(err)
+}).finally(() => {})
 
 
 

@@ -1,15 +1,22 @@
 {
-  "name": "jksb.js",
+  "name": "jksbjs",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "dependencies": {
-    "axios": "^0.25.0",
-    "got": "^11.8.2",
-    "iconv-lite": "^0.6.3",
-    "tough-cookie": "^4.0.0"
+  "main": "node.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "GAOYAOKU",
-  "license": ""
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaoyaoku/jksb.js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gaoyaoku/jksb.js/issues"
+  },
+  "homepage": "https://github.com/gaoyaoku/jksb.js#readme",
+  "dependencies": {
+    "axios": "^0.25.0"
+  }
 }

@@ -8,6 +8,8 @@
 - A variety of notification methods to let you know the result.
 - Available on almost all platforms.
 ## History
+>2022-01-30 optimized the logic when executing
+
 >2022-01-20 added specific version for Quantumult X and Nodejs, the universal version may be deprecated
 
 >2021-09-18 update vaccinationState & QR Code
@@ -28,14 +30,13 @@ synchronously update these options: health code color & location
 ## Different Versions
 ### Universial
 This version can be used in all platforms due to the env file created by a master.
-- index.js (optional)
-- notify.js
-- package.json (got iconv-lite tough-cookie)
-- persistence.js (optional)
+- deprecated/index.js (optional)
+- deprecated/notify.js
+- deprecated/package.json (got iconv-lite tough-cookie)
+- deprecated/persistence.js (optional)
 
 ### Nodejs
 Only those platforms have nodejs environment can run this program.
-- index.js (optional)
 - node.js
 - package.json (axios)
 

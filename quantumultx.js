@@ -22,7 +22,7 @@ const vaccinationState = 5;   //疫苗接种情况。1：已接种第一针；2�
         console.log('用户名或密码填写错误！');
         $notify("登录失败", "用户名或密码填写错误！");
         $done();
-    }    
+    }
     const [, ptopid] = loginResult.match(/ptopid=(.*?)&sid=/)
     if (!ptopid) {
         console.log('登录失败！');
@@ -52,7 +52,13 @@ const vaccinationState = 5;   //疫苗接种情况。1：已接种第一针；2�
         $done();
     }
 
-})()
+})().catch(err => {
+    console.log('填报失败！');
+    $notify("失败", '填报失败！');
+    $done();
+}).finally(() => {
+    $done();
+})
 
 
 function login() {
@@ -127,10 +133,10 @@ function submitForm(ptopid) {
         params.append("myvs_7", "否")
         params.append("myvs_8", "否")
         params.append("myvs_9", "否")
-        params.append("myvs_10", "否") 
-        params.append("myvs_11", "否") 
-        params.append("myvs_12", "否") 
-        params.append("myvs_13", "g") 
+        params.append("myvs_10", "否")
+        params.append("myvs_11", "否")
+        params.append("myvs_12", "否")
+        params.append("myvs_13", "g")
         params.append("myvs_13a", provinceCode)
         params.append("myvs_13b", cityCode)
         params.append("myvs_13c", currentLocation)
@@ -138,14 +144,14 @@ function submitForm(ptopid) {
         params.append("myvs_26", vaccinationState)
         params.append("memo22", "成功获取")
         params.append("did", "2")
-        params.append("door", "") 
-        params.append("day6", "") 
-        params.append("men6", "a") 
+        params.append("door", "")
+        params.append("day6", "")
+        params.append("men6", "a")
         params.append("sheng6", "")
-        params.append("shi6", "") 
-        params.append("fun3", "") 
-        params.append("jingdu", longitude) 
-        params.append("weidu", latitude) 
+        params.append("shi6", "")
+        params.append("fun3", "")
+        params.append("jingdu", longitude)
+        params.append("weidu", latitude)
         params.append("ptopid", ptopid)
         params.append("sid", "")
 
@@ -162,5 +168,5 @@ function submitForm(ptopid) {
             reject(reason.error)
         });
     })
-    
+
 }
