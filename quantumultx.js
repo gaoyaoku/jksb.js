@@ -1,10 +1,10 @@
 /*
-====================简介=====================
+====================简介===========================
 A JavaScript program for you to have a good sleep!
 
-  This version is specifically for Quantumult X.
+    This is a QuantumultX-only version.
 
-=================个人信息填写=================
+=================个人信息填写=======================
 */
 const username = '2019********';   //用户名
 const password = '********';   //密码
@@ -16,16 +16,18 @@ const latitude = '**.******';   //维度
 const vaccinationState = 5;   //疫苗接种情况。1：已接种第一针；2：已接种第二针；3：尚未接种；4：因禁忌症无法接种；5：已接种第三针；
 
 (async () => {
-    console.log('登录...');
+    console.log("”郑州大学校园常态化精准防疫平台“欢迎您！👏")
+    console.log('登录中...');
     const loginResult = await login()
     if (loginResult.indexOf('对不起') > -1) {
-        console.log('用户名或密码填写错误！');
-        $notify("登录失败", "用户名或密码填写错误！");
+        const error = loginResult.match(/(对不起.*?)</)
+        console.log(error[1] || loginResult)
+        $notify("登录失败", error[1] || '');
         $done();
     }
-    const [, ptopid] = loginResult.match(/ptopid=(.*?)&sid=/)
+    const [, ptopid] = loginResult.match(/ptopid=(.*?)&sid=(.*?)/)
     if (!ptopid) {
-        console.log('登录失败！');
+        console.log('登录失败！' + '\n' + loginResult)
         $notify("失败", "登录失败！");
         $done();
     }
@@ -39,21 +41,33 @@ const vaccinationState = 5;   //疫苗接种情况。1：已接种第一针；2�
     }
     console.log('今天还未填报！');
     console.log('填报中...');
-    // 可能是虽然显示填报成功了，但没有打卡记录的原因
-    await submitIndex(ptopid)
-    const submitFormResult = await submitForm(ptopid)
+    let fun18 = getIndexResult.match(/name="fun18"\s+value="(.*?)"/)
+    fun18 = parseInt(fun18[1])
+    if (!fun18) {
+        console.log('平台验证失败！')
+        console.log('填报失败！' + '\n' + getIndexResult)
+        $notify("失败", '平台验证失败！');
+        $done();
+    }
+    await submitIndex(ptopid, fun18)
+    const submitFormResult = await submitForm(ptopid, fun18)
     if (/感谢/.test(submitFormResult)) {
         console.log('填报成功！');
         $notify("成功", '填报成功！');
         $done();
+    } else if (submitFormResult.indexOf('提交失败') > -1){
+        const error = submitFormResult.match(/提交失败.*?<li>(.*?)<\/li>/)
+        console.log(error[1] || error[0] || submitFormResult)
+        $notify("失败", error[1] || error[0] || '');
+        $done();
     } else {
-        console.log('填报失败！');
+        console.log('填报失败！' + '\n' + submitFormResult)
         $notify("失败", '填报失败！');
         $done();
     }
 
 })().catch(err => {
-    console.log('填报失败！');
+    console.log('填报失败！\n' + err);
     $notify("失败", '填报失败！');
     $done();
 }).finally(() => {
@@ -97,11 +111,12 @@ function getIndex(ptopid) {
     })
 }
 
-function submitIndex(ptopid) {
+function submitIndex(ptopid, fun18) {
     return new Promise((resolve, reject) => {
         const params = new URLSearchParams();
         params.append('did', 1);
         params.append('door', '');
+        params.append('fun18', fun18);
         params.append('men6', 'a');
         params.append("ptopid", ptopid)
         params.append("sid", "")
@@ -121,7 +136,7 @@ function submitIndex(ptopid) {
     })
 }
 
-function submitForm(ptopid) {
+function submitForm(ptopid, fun18) {
     return new Promise((resolve, reject) => {
         const params = new URLSearchParams()
         params.append("myvs_1", "否")
@@ -136,7 +151,6 @@ function submitForm(ptopid) {
         params.append("myvs_10", "否")
         params.append("myvs_11", "否")
         params.append("myvs_12", "否")
-        params.append("myvs_13", "g")
         params.append("myvs_13a", provinceCode)
         params.append("myvs_13b", cityCode)
         params.append("myvs_13c", currentLocation)
@@ -149,6 +163,7 @@ function submitForm(ptopid) {
         params.append("men6", "a")
         params.append("sheng6", "")
         params.append("shi6", "")
+        params.append("fun18", fun18)
         params.append("fun3", "")
         params.append("jingdu", longitude)
         params.append("weidu", latitude)
