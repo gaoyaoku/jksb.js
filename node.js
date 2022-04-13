@@ -17,6 +17,7 @@ const latitude = '**.******';   //维度
 const vaccinationState = 5;   //疫苗接种情况。1：已接种第一针；2：已接种第二针；3：尚未接种；4：因禁忌症无法接种；5：已接种第三针；
 
 const axios = require('axios')
+const notify = require('./notify')
 const querystring = require('querystring')
 require('tls').DEFAULT_MIN_VERSION = 'TLSv1';
 
@@ -30,12 +31,14 @@ axios.defaults.headers.common['User-Agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone O
     const loginResult = await login()
     if (loginResult.indexOf('对不起') > -1) {
         const error = loginResult.match(/(对不起.*?)</)
-        console.log(error[1] || loginResult)
+        console.log('登录失败！\n' + error[1] || loginResult)
+        await notify.pushplus('登录失败！', error[1] || loginResult)
         return
     }
     const [, ptopid] = loginResult.match(/ptopid=(.*?)&sid=(.*?)/)
     if (!ptopid) {
-        console.log('登录失败！' + '\n' + loginResult)
+        console.log('登录失败！\n' + loginResult)
+        await notify.pushplus('登录失败！', loginResult)
         return
     }
     console.log('登录成功！');
@@ -43,6 +46,7 @@ axios.defaults.headers.common['User-Agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone O
     const getIndexResult = await getIndex(ptopid)
     if (/已经填报过了/.test(getIndexResult)) {
         console.log('今天已经填报过了');
+        await notify.pushplus('填报成功！', '今天已经填报过了')
         return
     }
     console.log('今天还未填报！');
@@ -51,18 +55,22 @@ axios.defaults.headers.common['User-Agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone O
     fun18 = parseInt(fun18[1])
     if (!fun18) {
         console.log('平台验证失败！')
-        console.log('填报失败！' + '\n' + getIndexResult)
+        console.log('填报失败！\n' + getIndexResult)
+        await notify.pushplus('填报失败！', '平台验证失败！\n' + getIndexResult)
         return
     }
     await submitIndex(ptopid, fun18)
     const submitFormResult = await submitForm(ptopid, fun18)
     if (/感谢/.test(submitFormResult)) {
         console.log('填报成功！');
+        await notify.pushplus('填报成功！')
     } else if (submitFormResult.indexOf('提交失败') > -1) {
         const error = submitFormResult.match(/提交失败.*?<li>(.*?)<\/li>/)
-        console.log(error[1] || error[0] || submitFormResult)
+        console.log('填报失败！\n' + error[1] || error[0] || submitFormResult)
+        await notify.pushplus('填报失败！', error[1] || error[0] || submitFormResult)
     } else {
         console.log('填报失败！' + '\n' + submitFormResult)
+        await notify.pushplus('填报失败！', submitFormResult)
     }
 })().catch(err => {
     console.log(err)

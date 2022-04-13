@@ -22,7 +22,7 @@ const vaccinationState = 5;   //疫苗接种情况。1：已接种第一针；2�
     if (loginResult.indexOf('对不起') > -1) {
         const error = loginResult.match(/(对不起.*?)</)
         console.log(error[1] || loginResult)
-        $notify("登录失败", error[1] || '');
+        $notify("登录失败", error[1] || loginResult);
         $done();
     }
     const [, ptopid] = loginResult.match(/ptopid=(.*?)&sid=(.*?)/)
@@ -58,7 +58,7 @@ const vaccinationState = 5;   //疫苗接种情况。1：已接种第一针；2�
     } else if (submitFormResult.indexOf('提交失败') > -1){
         const error = submitFormResult.match(/提交失败.*?<li>(.*?)<\/li>/)
         console.log(error[1] || error[0] || submitFormResult)
-        $notify("失败", error[1] || error[0] || '');
+        $notify("失败", '提交失败');
         $done();
     } else {
         console.log('填报失败！' + '\n' + submitFormResult)
