@@ -2,7 +2,7 @@
 ====================简介==========================
 A JavaScript program for you to have a good sleep!
 
-      This is a nodejs-only version.
+       This is a nodejs-only version.
 
 =================个人信息填写======================
 */
@@ -17,7 +17,7 @@ const latitude = '**.******';   //维度
 const vaccinationState = 5;   //疫苗接种情况。1：已接种第一针；2：已接种第二针；3：尚未接种；4：因禁忌症无法接种；5：已接种第三针；
 
 const axios = require('axios')
-const notify = require('./notify')
+const notifyMethods = require('./notify')
 const querystring = require('querystring')
 require('tls').DEFAULT_MIN_VERSION = 'TLSv1';
 
@@ -26,27 +26,24 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 axios.defaults.headers.common['User-Agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1';
 
 (async () => {
-    console.log("”郑州大学校园常态化精准防疫平台“欢迎您！👏\n")
+    console.log("开始执行...")
     console.log('登录中...');
     const loginResult = await login()
     if (loginResult.indexOf('对不起') > -1) {
         const error = loginResult.match(/(对不起.*?)</)
-        console.log('登录失败！\n' + error[1] || loginResult)
-        await notify.pushplus('登录失败！', error[1] || loginResult)
+        await notify("登录失败", error[1] || loginResult)
         return
     }
     const [, ptopid] = loginResult.match(/ptopid=(.*?)&sid=(.*?)/)
     if (!ptopid) {
-        console.log('登录失败！\n' + loginResult)
-        await notify.pushplus('登录失败！', loginResult)
+        await notify("登录失败", loginResult)
         return
     }
     console.log('登录成功！');
     console.log('查看今天填报情况...');
     const getIndexResult = await getIndex(ptopid)
     if (/已经填报过了/.test(getIndexResult)) {
-        console.log('今天已经填报过了');
-        await notify.pushplus('填报成功！', '今天已经填报过了')
+        await notify("填报成功", "今天已经填报过了！")
         return
     }
     console.log('今天还未填报！');
@@ -54,26 +51,24 @@ axios.defaults.headers.common['User-Agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone O
     let fun18 = getIndexResult.match(/name="fun18"\s+value="(.*?)"/)
     fun18 = parseInt(fun18[1])
     if (!fun18) {
-        console.log('平台验证失败！')
-        console.log('填报失败！\n' + getIndexResult)
-        await notify.pushplus('填报失败！', '平台验证失败！\n' + getIndexResult)
+        await notify("填报失败", "平台验证失败！")
         return
     }
     await submitIndex(ptopid, fun18)
     const submitFormResult = await submitForm(ptopid, fun18)
     if (/感谢/.test(submitFormResult)) {
-        console.log('填报成功！');
-        await notify.pushplus('填报成功！')
+        await notify("填报成功")
+        return
     } else if (submitFormResult.indexOf('提交失败') > -1) {
         const error = submitFormResult.match(/提交失败.*?<li>(.*?)<\/li>/)
-        console.log('填报失败！\n' + error[1] || error[0] || submitFormResult)
-        await notify.pushplus('填报失败！', error[1] || error[0] || submitFormResult)
+        await notify("填报失败", error[1] || error[0] || submitFormResult)
+        return
     } else {
-        console.log('填报失败！' + '\n' + submitFormResult)
-        await notify.pushplus('填报失败！', submitFormResult)
+        notify("填报失败", submitFormResult)
+        return
     }
 })().catch(err => {
-    console.log(err)
+    notify("填报失败", err)
 }).finally(() => {})
 
 function login() {
@@ -126,13 +121,15 @@ function submitForm(ptopid, fun18) {
             "myvs_3": "否",
             "myvs_4": "否",
             "myvs_5": "否",
-            "myvs_6": "否",
+            // "myvs_6": "否",
             "myvs_7": "否",
             "myvs_8": "否",
-            "myvs_9": "否",
-            "myvs_10": "否",
+            "myvs_9": "y",
+            // "myvs_10": "否",
             "myvs_11": "否",
             "myvs_12": "否",
+            "myvs_13": "否",
+            "myvs_15": "否",
             "myvs_13a": provinceCode,
             "myvs_13b": cityCode,
             "myvs_13c": currentLocation,
@@ -156,4 +153,9 @@ function submitForm(ptopid, fun18) {
             .then(res => resolve(res.data))
             .catch(err => reject(err))
     })
+}
+
+async function notify(title, description = '') {
+    console.log(title + '\n' + description)
+    await notifyMethods.pushplus(title, description)
 }
