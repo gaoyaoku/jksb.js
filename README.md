@@ -1,21 +1,26 @@
-# jksb.js
-### Introduction
-**A JavaScript program for you to have a good sleep!**  
+## 😊 jksb.js
+This program will be useful if you are tired of the annoying and endless clock in.  
+You can now get a good night's sleep!
 
-### Features
-- Automatically reports your health information every day.
-- A variety of notification methods to let you know the result.
-- Available on almost all platforms.  
- 
-### History
+## ✨ Features
+- Automatically report your health information every day
+- Available on almost all platforms
 
-- 2022-05-10 updated to the latest version
+## 🔔 Get Start
+This program can run on your mobile devices, desktop and server as well.  
+- If you are a Quantumult X, Surge, Loon or Shadowrocket user, just save`jksb.js`file to you app and set the timer.
+- If you prefer to use a desktop or server, you need a `nodejs` environment and `npm install request`.
 
-- 2022-04-10 updated to the latest version
+## 📋 Version History
+- 2022-09-06 remade the program & added verification code recognition support
+
+- 2022-05-10 updated post parameters
+
+- 2022-04-10 updated post parameters & added pushplus notification support
 
 - 2022-01-30 optimized the logic of program execution
 
-- 2022-01-20 added specific version for Quantumult X and Nodejs(the universal version may be deprecated)
+- 2022-01-20 added specific version for Quantumult X and Nodejs & removed the deprecated universal version
 
 - 2021-09-18 updated vaccination state & QR code
 
@@ -27,21 +32,9 @@
 
 - 2021-08-20 added support for random time & optimized the login procedure
 
-- 2021-08-03 added support for persistence store
+- 2021-08-03 added persistence store feature
 
-- 2021-07-30 released v1.0
+- 2021-07-30 added health report feature
 
-### Different Versions
-#### Nodejs
-Only those platforms have nodejs environment can run this program.
-- index.js
-- node.js
-- notify.js
-- package.json
-
-#### Quantumult X
-Only Quantumult X can run this script.
-- quantumultx.js
-
-### How to use?
-wait for me...
+## 🍺 Credits
+OpenAPI by [@Peng-YM](https://github.com/Peng-YM)

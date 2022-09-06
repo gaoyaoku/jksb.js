@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/gaoyaoku/jksb.js#readme",
   "dependencies": {
-    "axios": "^0.26.1"
+    "request": "^2.88.2"
   }
 }
