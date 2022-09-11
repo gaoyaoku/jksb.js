@@ -25,6 +25,9 @@ $.http = HTTP({
 
 !(async () => {
     $.log("开始执行...")
+    const randomTime = getRandomInt(0, 100000)
+    await $.wait(randomTime)
+    $.log(`随机等待：${randomTime / 1000}s`)
     $.log('登录中...')
     const loginResult = await login()
     if (loginResult.indexOf('对不起') > -1) {
@@ -73,6 +76,9 @@ $.http = HTTP({
 })()
     .catch(err => {
         $.notify("填报失败", err)
+    })
+    .finally(() => {
+        $.done()
     })
 
 
@@ -217,6 +223,12 @@ function urlEncode(json) {
     return Object.keys(json).map((key) => {
         return encodeURIComponent(key) + '=' + encodeURIComponent(json[key])
     }).join('&');
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 

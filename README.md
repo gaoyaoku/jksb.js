@@ -34,10 +34,10 @@ OpenAPI by [@Peng-YM](https://github.com/Peng-YM)
 ## ⚠️ Disclaimer
 All downloads and use of the software are deemed to have been carefully read and fully agreed to the following terms.
 
-The software is for personal learning and communication purposes only, commercial and undesirable use is strictly prohibited.
-If any commercial or undesirable use is found, the author of the software has the right to revoke the right of use.
-The use of this software is at your own risk and the author of the software does not assume any responsibility.
-In addition to the terms of service stated in the software, the author of the software shall not be responsible or liable for any accidents, negligence, contract damage, defamation, infringement of copyright or other intellectual property rights and any damages resulting from the improper use of the software.
-The Software Author shall not be liable for any interruption of service or other defects caused by force majeure or for reasons beyond the control of hacker attacks, communication line interruptions, etc., resulting in the normal use of the Software by the User, but will endeavor to minimize any loss or impact caused to the User as a result.
-Please refer to the relevant national laws and regulations for issues not covered by this statement, and when this statement conflicts with the relevant national laws and regulations, the national laws and regulations shall prevail.
+The software is for personal learning and communication purposes only, commercial and undesirable use is strictly prohibited.  
+If any commercial or undesirable use is found, the author of the software has the right to revoke the right of use.  
+The use of this software is at your own risk and the author of the software does not assume any responsibility.  
+In addition to the terms of service stated in the software, the author of the software shall not be responsible or liable for any accidents, negligence, contract damage, defamation, infringement of copyright or other intellectual property rights and any damages resulting from the improper use of the software.  
+The Software Author shall not be liable for any interruption of service or other defects caused by force majeure or for reasons beyond the control of hacker attacks, communication line interruptions, etc., resulting in the normal use of the Software by the User, but will endeavor to minimize any loss or impact caused to the User as a result.  
+Please refer to the relevant national laws and regulations for issues not covered by this statement, and when this statement conflicts with the relevant national laws and regulations, the national laws and regulations shall prevail.  
 The copyright of this software related statement and its right to modify, update and final interpretation are owned by the software author.
