@@ -1,3 +1,6 @@
+## 👋 Goodbye
+COVID-19 may have gone！
+
 ## 😊 jksb.js
 This program will be useful if you are tired of the annoying and endless daily health report.  
 You can now get a good night's sleep!
