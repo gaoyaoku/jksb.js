@@ -1,5 +1,5 @@
 ## 👋 Goodbye
-COVID-19 may have gone！
+COVID-19 is gone！
 
 ## 😊 jksb.js
 This program will be useful if you are tired of the annoying and endless daily health report.  
